@@ -18,8 +18,14 @@ const state = {page: 1, value: ''}
     try {
         state.value = e.currentTarget.elements.query.value
         const pictures = await getPictures(state.value, state.page)
+        refs.gallery.innerHTML = cardCreate(pictures)
     } catch(err) {
         console.log(err.message)
     }
+
  }
+
+//  кнопка loadMore
+
+
 
