@@ -2,11 +2,6 @@ body {
 background-color: bisque;
 }
 
-
-.search-form {
-    align-items: center;
-}
-
 .gallery{
     width: 1220px;
     margin: 0 auto;
