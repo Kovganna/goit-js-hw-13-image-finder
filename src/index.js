@@ -11,14 +11,20 @@ const refs = {
 
 const state = {page: 1, value: ''}
 
- refs.form.addEventListener('submit', onSearchImg)
  
- async function onSearchImg(e) {
-    e.preventDefault()
+
+ refs.form.addEventListener('submit', onSearchImg)
+ refs.loadMore.addEventListener('click', onLoadMore)
+ 
+ async function onSearchImg(event) {
+    event.preventDefault()
     try {
-        state.value = e.currentTarget.elements.query.value
+        state.value = event.currentTarget.elements.query.value
         const pictures = await getPictures(state.value, state.page)
         refs.gallery.innerHTML = cardCreate(pictures)
+        if(pictures.length > 11) {
+            refs.loadMore.style.visibility = 'visible';
+        }
     } catch(err) {
         console.log(err.message)
     }
@@ -27,5 +33,15 @@ const state = {page: 1, value: ''}
 
 //  кнопка loadMore
 
+async function onLoadMore() {
+    state.page += 1 
+    const pictures = await getPictures(state.value, state.page)
+    refs.gallery.insertAdjacentHTML('beforeend', cardCreate(pictures))
+
+    refs.gallery.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+      });
+}
 
 
