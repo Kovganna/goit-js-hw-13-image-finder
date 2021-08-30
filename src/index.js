@@ -43,7 +43,7 @@ refs.loadMore.style.visibility = 'hidden';
         }
         if(!pictures.length){
             alert({
-                text: 'No matches! Try again!'
+                text: 'No match! Try again!'
             })
         }
     } catch(err) {
