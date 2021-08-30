@@ -1,6 +1,11 @@
 import { getPictures } from './helpers/apiService';
 import  cardCreate from './templates/cardCreate.hbs';
 import * as basicLightbox from '../node_modules/basiclightbox';
+const options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5,
+};
 
 
 
@@ -23,6 +28,9 @@ refs.loadMore.style.visibility = 'hidden';
  async function onSearchImg(event) {
     event.preventDefault()
     refs.loadMore.style.visibility = 'hidden';
+    // if(!event.currentTarget.elements.query.value.trim()) {
+    //     return
+    // }
     try {
         state.value = event.currentTarget.elements.query.value
         const pictures = await getPictures(state.value, state.page)
@@ -42,11 +50,16 @@ async function onLoadMore() {
     state.page += 1 
     const pictures = await getPictures(state.value, state.page)
     refs.gallery.insertAdjacentHTML('beforeend', cardCreate(pictures))
+// создаем экземпляр класса Intersection Observer
+if(state.page === 2) {
+    const observer = new IntersectionObserver(onLoadMore, options)
+    observer.observe(refs.loadMore)
+}
 
-    refs.gallery.scrollIntoView({
-        behavior: 'smooth',
-        block: 'end',
-      });
+    // refs.gallery.scrollIntoView({
+    //     behavior: 'smooth',
+    //     block: 'end',
+    //   });
 }
 
 refs.gallery.addEventListener('click', onOpenGallery)
@@ -56,10 +69,9 @@ function onOpenGallery(event){
     }
     const instance = basicLightbox.create(`
     <img src="${event.target.dataset.source}" width="800" height="600">
-`)
-
-instance.show()
+`).show()
 
 }
+ 
 
 
