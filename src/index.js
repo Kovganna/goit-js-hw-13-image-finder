@@ -1,6 +1,9 @@
 import { getPictures } from './helpers/apiService';
 import  cardCreate from './templates/cardCreate.hbs';
 import * as basicLightbox from '../node_modules/basiclightbox';
+import { alert } from '../node_modules/@pnotify/core/dist/PNotify.js';
+import '@pnotify/core/dist/BrightTheme.css';
+
 const options = {
     root: null,
     rootMargin: '0px',
@@ -37,6 +40,11 @@ refs.loadMore.style.visibility = 'hidden';
         refs.gallery.innerHTML = cardCreate(pictures)
         if(pictures.length > 11) {
             refs.loadMore.style.visibility = 'visible';
+        }
+        if(!pictures.length){
+            alert({
+                text: 'No matches! Try again!'
+            })
         }
     } catch(err) {
         console.log(err.message)
