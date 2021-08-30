@@ -1,5 +1,8 @@
 import { getPictures } from './helpers/apiService';
 import  cardCreate from './templates/cardCreate.hbs';
+import * as basicLightbox from '../node_modules/basiclightbox';
+
+
 
 // getPictures('cat', '1')
 
@@ -10,6 +13,7 @@ const refs = {
 }
 
 const state = {page: 1, value: ''}
+refs.loadMore.style.visibility = 'hidden';
 
  
 
@@ -18,6 +22,7 @@ const state = {page: 1, value: ''}
  
  async function onSearchImg(event) {
     event.preventDefault()
+    refs.loadMore.style.visibility = 'hidden';
     try {
         state.value = event.currentTarget.elements.query.value
         const pictures = await getPictures(state.value, state.page)
@@ -42,6 +47,19 @@ async function onLoadMore() {
         behavior: 'smooth',
         block: 'end',
       });
+}
+
+refs.gallery.addEventListener('click', onOpenGallery)
+function onOpenGallery(event){
+    if(event.target.nodeName !== "IMG") {
+        return
+    }
+    const instance = basicLightbox.create(`
+    <img src="${event.target.dataset.source}" width="800" height="600">
+`)
+
+instance.show()
+
 }
 
 
